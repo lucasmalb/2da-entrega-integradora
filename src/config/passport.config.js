@@ -4,7 +4,7 @@ import jwt, { ExtractJwt } from "passport-jwt";
 import GitHubStrategy from "passport-github2";
 import { createHash, isValidPassword } from "../utils/functionsUtil.js";
 import { userService } from "../services/userService.js";
-import cartManagerDB from "../dao/cartManagerDB.js";
+import  cartManagerDB  from "../dao/cartManagerDB.js";
 
 const initializePassport = () => {
   const localStratergy = local.Strategy;
@@ -18,6 +18,7 @@ const initializePassport = () => {
     password: "adminCod3r123",
     role: "admin",
   };
+  
   const CLIENT_ID = "Iv1.295ee394a6b994a0";
   const SECRET_ID = "8de066a6a45ddf27113115e6a23b743c6d42b5b2";
   const githubCallbackURL = "http://localhost:8080/api/sessions/githubcallback";
@@ -31,7 +32,6 @@ const initializePassport = () => {
     return token;
   };
 
-  //Registro
   passport.use(
     "register",
     new localStratergy(
@@ -45,8 +45,7 @@ const initializePassport = () => {
         try {
           let user = await userService.getUserByEmail(username);
           if (user) {
-            const errorMessage =
-              "¡Registro fallido! El usuario ya existe en la base de datos\n Por favor, ingresá otro correo electrónico.";
+            const errorMessage = "¡Registro fallido! El usuario ya existe en la base de datos\n Por favor, ingresá otro correo electrónico.";
             return done(null, false, errorMessage);
           }
 
@@ -69,7 +68,7 @@ const initializePassport = () => {
     )
   );
 
-  //Login
+  
   passport.use(
     "login",
     new localStratergy(
@@ -85,14 +84,12 @@ const initializePassport = () => {
 
           const user = await userService.getUserByEmail(username);
           if (!user) {
-            const errorMessage =
-              "¡Inicio de sesión fallido! El usuario no existe\n Por favor, verifica tu correo electrónico e intenta nuevamente.";
+            const errorMessage = "¡Inicio de sesión fallido! El usuario no existe\n Por favor, verifica tu correo electrónico e intenta nuevamente.";
             return done(null, false, errorMessage);
           }
 
           if (!isValidPassword(user, password)) {
-            const errorMessage =
-              "¡Inicio de sesión fallido! La contraseña es incorrecta\n Por favor, verifica tu contraseña e intenta nuevamente.";
+            const errorMessage = "¡Inicio de sesión fallido! La contraseña es incorrecta\n Por favor, verifica tu contraseña e intenta nuevamente.";
             return done(null, false, errorMessage);
           }
 
@@ -109,7 +106,7 @@ const initializePassport = () => {
     )
   );
 
-  //Github
+
   passport.use(
     "github",
     new GitHubStrategy(
@@ -120,20 +117,11 @@ const initializePassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
+          
           const email = profile._json.email;
 
-          // Lista de correos privados
-          const correosPrivados = ["correo1@ejemplo.com", "correo2@ejemplo.com"];
-
-          // Verificar si el correo de GitHub está en la lista de correos privados
-          const esCorreoPrivado = correosPrivados.includes(email);
-
-          let user;
-          if (esCorreoPrivado) {
-            // Obtener el usuario correspondiente al correo de GitHub
-            user = await userService.getUserByEmail(email);
-          } else {
-            // Crear un nuevo usuario si no es un correo privado
+          let user = await userService.getUserByEmail(email);
+          if (!user) {
             let newUser = {
               first_name: profile._json.login,
               last_name: " ",
@@ -143,15 +131,16 @@ const initializePassport = () => {
               role: "user",
               cart: await CartService.createCart(),
             };
-            user = await userService.createUser(newUser);
-          }
+            let result = await userService.createUser(newUser);
+            done(null, result);
+          } else {
+            if (!user.cart) {
+              user.cart = await CartService.createCart();
+              await userService.updateUser(user);
+            }
 
-          if (!user.cart) {
-            user.cart = await CartService.createCart();
-            await userService.updateUser(user);
+            done(null, user);
           }
-
-          done(null, user);
         } catch (error) {
           return done(error);
         }
@@ -159,7 +148,7 @@ const initializePassport = () => {
     )
   );
 
-  //Login con JWT
+  
   passport.use(
     "jwt",
     new JWTStrategy(
