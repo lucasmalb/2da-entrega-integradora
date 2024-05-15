@@ -47,21 +47,4 @@ export const userService = {
       throw new Error("Error al actualizar el usuario en la base de datos");
     }
   },
-  // async loginUser(email, password) {
-  //   if (!email || !password) {
-  //     throw new Error("Faltan datos");
-  //   }
-  //   try {
-  //     const user = await userModel.findOne({ email });
-  //     if (!user) throw new Error("credenciales inválidas");
-  //     if (isValidPassword(user, password)) {
-  //       return user;
-  //     } else {
-  //       throw new Error("Credenciales inválidas");
-  //     }
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     throw new Error("Error al iniciar sesión");
-  //   }
-  // },
 };

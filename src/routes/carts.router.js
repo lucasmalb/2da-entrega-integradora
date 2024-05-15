@@ -7,13 +7,13 @@ const router = express.Router();
 const ProductService = new productManagerDB();
 const CartService = new cartManagerDB(ProductService);
 
-//Obtener todos los carritos (para hacer pruebas)
+
 router.get("/", async (req, res) => {
   const result = await CartService.getAllCarts();
   return res.status(200).send(result);
 });
 
-//Obtener un carrito por ID
+
 router.get("/:cid", async (req, res) => {
   try {
     const result = await CartService.getCartById(req.params.cid);
@@ -29,7 +29,7 @@ router.get("/:cid", async (req, res) => {
   }
 });
 
-//Crear un carrito
+
 router.post("/", async (req, res) => {
   try {
     const { products } = req.body;
@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-//Agregar un producto a un carrito por ID
+
 router.post("/:cid/product/:pid", async (req, res) => {
   try {
     const result = await CartService.addProductByID(
@@ -65,7 +65,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
   }
 });
 
-// Eliminar un producto del carrito
+
 router.delete("/:cid/product/:pid", async (req, res) => {
   try {
     const { cid, pid } = req.params;
@@ -110,7 +110,6 @@ router.put("/:cid", async (req, res) => {
   }
 });
 
-// Actualizar la cantidad de un producto en el carrito
 router.put("/:cid/product/:pid", async (req, res) => {
   try {
     const { cid, pid } = req.params;
@@ -130,7 +129,6 @@ router.put("/:cid/product/:pid", async (req, res) => {
   }
 });
 
-// Eliminar todos los productos del carrito
 router.delete("/:cid", async (req, res) => {
   try {
     const result = await CartService.clearCart(req.params.cid);

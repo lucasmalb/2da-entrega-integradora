@@ -4,7 +4,7 @@ import jwt, { ExtractJwt } from "passport-jwt";
 import GitHubStrategy from "passport-github2";
 import { createHash, isValidPassword } from "../utils/functionsUtil.js";
 import { userService } from "../services/userService.js";
-import  cartManagerDB  from "../dao/cartManagerDB.js";
+import cartManagerDB from "../dao/cartManagerDB.js";
 
 const initializePassport = () => {
   const localStratergy = local.Strategy;
@@ -45,7 +45,8 @@ const initializePassport = () => {
         try {
           let user = await userService.getUserByEmail(username);
           if (user) {
-            const errorMessage = "¡Registro fallido! El usuario ya existe en la base de datos\n Por favor, ingresá otro correo electrónico.";
+            const errorMessage =
+              "¡Registro fallido! El usuario ya existe en la base de datos\n Por favor, ingresá otro correo electrónico.";
             return done(null, false, errorMessage);
           }
 
@@ -84,12 +85,14 @@ const initializePassport = () => {
 
           const user = await userService.getUserByEmail(username);
           if (!user) {
-            const errorMessage = "¡Inicio de sesión fallido! El usuario no existe\n Por favor, verifica tu correo electrónico e intenta nuevamente.";
+            const errorMessage =
+              "¡Inicio de sesión fallido! El usuario no existe\n Por favor, verifica tu correo electrónico e intenta nuevamente.";
             return done(null, false, errorMessage);
           }
 
           if (!isValidPassword(user, password)) {
-            const errorMessage = "¡Inicio de sesión fallido! La contraseña es incorrecta\n Por favor, verifica tu contraseña e intenta nuevamente.";
+            const errorMessage =
+              "¡Inicio de sesión fallido! La contraseña es incorrecta\n Por favor, verifica tu contraseña e intenta nuevamente.";
             return done(null, false, errorMessage);
           }
 
@@ -117,15 +120,20 @@ const initializePassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          // if (!profile || !profile._json || !profile._json.email) {
-          //   const errorMessage =
-          //     "No se encontró un email asignado en github, por lo tanto no se podrá loguear\n Por favor, actualice su perfil de github con un email e intenta nuevamente.";
-          //   return done(null, false, errorMessage);
-          // }
           const email = profile._json.email;
 
-          let user = await userService.getUserByEmail(email);
-          if (!user) {
+          // Lista de correos privados
+          const correosPrivados = ["correo1@ejemplo.com", "correo2@ejemplo.com"];
+
+          // Verificar si el correo de GitHub está en la lista de correos privados
+          const esCorreoPrivado = correosPrivados.includes(email);
+
+          let user;
+          if (esCorreoPrivado) {
+            // Obtener el usuario correspondiente al correo de GitHub
+            user = await userService.getUserByEmail(email);
+          } else {
+            // Crear un nuevo usuario si no es un correo privado
             let newUser = {
               first_name: profile._json.login,
               last_name: " ",
@@ -135,16 +143,15 @@ const initializePassport = () => {
               role: "user",
               cart: await CartService.createCart(),
             };
-            let result = await userService.createUser(newUser);
-            done(null, result);
-          } else {
-            if (!user.cart) {
-              user.cart = await CartService.createCart();
-              await userService.updateUser(user);
-            }
-
-            done(null, user);
+            user = await userService.createUser(newUser);
           }
+
+          if (!user.cart) {
+            user.cart = await CartService.createCart();
+            await userService.updateUser(user);
+          }
+
+          done(null, user);
         } catch (error) {
           return done(error);
         }

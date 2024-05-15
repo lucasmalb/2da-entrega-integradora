@@ -28,7 +28,6 @@ export const renderLogin = (req, res) => {
 export const getProducts = async (req, res) => {
   try {
     const { page = 1, limit = 8, sort } = req.query;
-    //uso limit 8 solo por cuestiones esteticas para que funcione bien con mi frontEnd
     const options = {
       page: Number(page),
       limit: Number(limit),
