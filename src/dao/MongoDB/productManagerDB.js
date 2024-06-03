@@ -70,4 +70,4 @@ class productManagerDB {
   }
 }
 
-export { productManagerDB };
+export default productManagerDB;

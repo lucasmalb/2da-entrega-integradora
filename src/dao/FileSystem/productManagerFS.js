@@ -102,4 +102,4 @@ class productManagerFS {
     }
   }
 }
-export { productManagerFS };
+export default productManagerFS ;

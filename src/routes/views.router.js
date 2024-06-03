@@ -9,9 +9,9 @@ import {
   getProducts,
   goHome,
 } from "../controllers/views.controller.js";
-import { productModel } from "../dao/models/productModel.js";
-import { cartModel } from "../dao/models/cartModel.js";
-import  productManagerDB  from "../dao/ProductManagerDB.js";
+import { productModel } from "../models/productModel.js";
+import { cartModel } from "../models/cartModel.js";
+import  productManagerDB  from "../dao/MongoDB/productManagerDB.js";
 
 const ProductService = new productManagerDB();
 const router = Router();

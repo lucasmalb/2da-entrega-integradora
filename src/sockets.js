@@ -1,8 +1,8 @@
-import { messageModel } from "./dao/models/messageModel.js";
-import  productManagerDB  from "./dao/ProductManagerDB.js";
+import { messageModel } from "./models/messageModel.js";
+import  productManagerDB  from "./dao/MongoDB/productManagerDB.js";
 import { messageService } from "./services/messageService.js";
-import  cartManagerDB  from "./dao/cartManagerDB.js";
-import userModel from "./dao/models/userModel.js";
+import  cartManagerDB  from "./dao/MongoDB/cartManagerDB.js";
+import userModel from "./models/userModel.js"
 
 const ProductService = new productManagerDB();
 const CartService = new cartManagerDB();

@@ -1,6 +1,6 @@
-import userModel from "../dao/models/userModel.js";
-import  productManagerDB  from "../dao/ProductManagerDB.js";
-import { productModel } from "../dao/models/productModel.js";
+import userModel from "../models/userModel.js";
+import  productManagerDB  from "../dao/MongoDB/productManagerDB.js";
+import { productModel } from "../models/productModel.js";
 
 const ProductService = new productManagerDB();
 

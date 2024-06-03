@@ -4,7 +4,7 @@ import jwt, { ExtractJwt } from "passport-jwt";
 import GitHubStrategy from "passport-github2";
 import { createHash, isValidPassword } from "../utils/functionsUtil.js";
 import { userService } from "../services/userService.js";
-import  cartManagerDB  from "../dao/cartManagerDB.js";
+import  cartManagerDB  from "../dao/MongoDB/cartManagerDB.js";
 
 const initializePassport = () => {
   const localStratergy = local.Strategy;
