@@ -4,7 +4,8 @@ import jwt, { ExtractJwt } from "passport-jwt";
 import GitHubStrategy from "passport-github2";
 import { createHash, isValidPassword } from "../utils/functionsUtil.js";
 import { userService } from "../services/userService.js";
-import  cartManagerDB  from "../dao/MongoDB/cartManagerDB.js";
+import  cartManagerDB  from "../dao/MongoDB/cartManagerDB.js"
+import config from "./config.js";
 
 const initializePassport = () => {
   const localStratergy = local.Strategy;
@@ -14,14 +15,14 @@ const initializePassport = () => {
   const admin = {
     first_name: "Coder",
     last_name: "Admin",
-    email: "adminCoder@coder.com",
-    password: "adminCod3r123",
+    email: config.ADMIN_EMAIL,
+    password: config.ADMIN_PASSWORD,
     role: "admin",
   };
-  
-  const CLIENT_ID = "Iv1.295ee394a6b994a0";
-  const SECRET_ID = "8de066a6a45ddf27113115e6a23b743c6d42b5b2";
-  const githubCallbackURL = "http://localhost:8080/api/sessions/githubcallback";
+
+  const CLIENT_ID = config.CLIENT_ID;
+  const SECRET_ID = config.SECRET_ID;
+  const githubCallbackURL = config.GITHUB_CALLBACK_URL;
 
   const cookieExtractor = (req) => {
     let token = null;
@@ -32,6 +33,7 @@ const initializePassport = () => {
     return token;
   };
 
+  //Registro
   passport.use(
     "register",
     new localStratergy(
@@ -68,7 +70,7 @@ const initializePassport = () => {
     )
   );
 
-  
+  //Login
   passport.use(
     "login",
     new localStratergy(
@@ -77,7 +79,7 @@ const initializePassport = () => {
       },
       async (username, password, done) => {
         try {
-          if (username === "adminCoder@coder.com" && password === "adminCod3r123") {
+          if (username === config.ADMIN_EMAIL && password === config.ADMIN_PASSWORD) {
             const adminUser = admin;
             return done(null, adminUser);
           }
@@ -106,7 +108,7 @@ const initializePassport = () => {
     )
   );
 
-
+  //Github
   passport.use(
     "github",
     new GitHubStrategy(
@@ -117,7 +119,11 @@ const initializePassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          
+          // if (!profile || !profile._json || !profile._json.email) {
+          //   const errorMessage =
+          //     "No se encontró un email asignado en github, por lo tanto no se podrá loguear\n Por favor, actualice su perfil de github con un email e intenta nuevamente.";
+          //   return done(null, false, errorMessage);
+          // }
           const email = profile._json.email;
 
           let user = await userService.getUserByEmail(email);
@@ -148,13 +154,13 @@ const initializePassport = () => {
     )
   );
 
-  
+  //Login con JWT
   passport.use(
     "jwt",
     new JWTStrategy(
       {
         jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-        secretOrKey: "coderSecret",
+        secretOrKey: config.JWT_SECRET,
       },
       async (jwt_payload, done) => {
         try {
