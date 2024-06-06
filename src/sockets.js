@@ -1,11 +1,13 @@
 import { messageModel } from "./models/messageModel.js";
-import  productManagerDB  from "./dao/MongoDB/productManagerDB.js";
-import { messageService } from "./services/messageService.js";
-import  cartManagerDB  from "./dao/MongoDB/cartManagerDB.js";
-import userModel from "./models/userModel.js"
+import ProductManager from "./dao/MongoDB/ProductManagerDB.js";
+import MessageManager from "./dao/MongoDB/MessageManagerDB.js";
+import  cartManager  from "./dao/MongoDB/CartManagerDB.js";
+import config from "./config/config.js";
 
-const ProductService = new productManagerDB();
-const CartService = new cartManagerDB();
+const ProductService = new ProductManager();
+const CartService = new cartManager();
+const messageService = new MessageManager();
+
 let users = [];
 
 export default (io) => {
@@ -41,7 +43,7 @@ export default (io) => {
     socket.on("deleteProduct", deleteProduct);
     socket.on("addToCart", async ({ productId, userEmail, userCartID }) => {
       try {
-        if (userEmail === "adminCoder@coder.com") {
+        if (userEmail === config.ADMIN_EMAIL) {
           const errorMessage = "No se pueden agregar productos al carrito del administrador";
           socket.emit("cartNotUpdated", errorMessage);
         } else {

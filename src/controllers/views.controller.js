@@ -1,8 +1,9 @@
-import userModel from "../models/userModel.js";
-import  productManagerDB  from "../dao/MongoDB/productManagerDB.js";
+import { userModel } from "../models/userModel.js";
 import { productModel } from "../models/productModel.js";
-
-const ProductService = new productManagerDB();
+import productService from "../services/productService.js";
+import { cartModel } from "../models/cartModel.js";
+import cartService from "../services/cartService.js";
+import ticketRepository from "../repositories/tickets.repository.js";
 
 export const goHome = async (req, res) => {
   try {
@@ -10,6 +11,25 @@ export const goHome = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(400).send({ error: err.message });
+  }
+};
+
+export const renderHome = async (req, res) => {
+  try {
+    const limit = 5;
+    const products = await productModel.find().limit(limit).lean();
+    const totalQuantityInCart = calculateTotalQuantityInCart(req.user);
+
+    res.render("home", {
+      title: "Backend / Final - Home",
+      style: "styles.css",
+      products: products,
+      user: req.user,
+      userAdmin: req.isAdmin,
+      totalQuantityInCart,
+    });
+  } catch (error) {
+    res.redirect("/login");
   }
 };
 
@@ -25,9 +45,20 @@ export const renderLogin = (req, res) => {
   return;
 };
 
+export const renderRegister = (req, res) => {
+  res.render("register", {
+    title: "Backend / Final - Registro",
+    style: "styles.css",
+    message: req.session.messages ?? "",
+  });
+  delete req.session.messages;
+  req.session.save();
+};
+
 export const getProducts = async (req, res) => {
   try {
     const { page = 1, limit = 8, sort } = req.query;
+    //uso limit 8 solo por cuestiones esteticas para que funcione bien con mi frontEnd
     const options = {
       page: Number(page),
       limit: Number(limit),
@@ -55,7 +86,7 @@ export const getProducts = async (req, res) => {
       options.sort = { price: sort === "asc" ? 1 : -1 };
     }
 
-    const products = await ProductService.getPaginateProducts(searchQuery, options);
+    const products = await productService.getPaginateProducts(searchQuery, options);
     const paginationLinks = buildPaginationLinks(req, products);
     const categories = await productModel.distinct("category");
     const totalQuantityInCart = calculateTotalQuantityInCart(req.user);
@@ -93,6 +124,78 @@ export const getProducts = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
+export const renderRealTimeProducts = async (req, res) => {
+  const totalQuantityInCart = calculateTotalQuantityInCart(req.user);
+
+  res.render("realTimeProducts", {
+    products: productService.getAllProducts,
+    style: "styles.css",
+    user: req.user,
+    userAdmin: req.isAdmin,
+    totalQuantityInCart,
+  });
+};
+
+export const renderChat = async (req, res) => {
+  const totalQuantityInCart = calculateTotalQuantityInCart(req.user);
+  res.render("chat", {
+    style: "styles.css",
+    user: req.user,
+    userAdmin: req.isAdmin,
+    totalQuantityInCart,
+  });
+};
+
+export const renderCart = async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const cart = await cartModel.findOne({ _id: cid }).lean();
+    if (!cart) {
+      return res.status(404).json({ error: "No se encontró el carrito" });
+    }
+    const products = await Promise.all(
+      cart.products.map(async (product) => {
+        const productData = await productModel.findOne({ _id: product._id }).lean();
+        return { ...product, product: productData };
+      })
+    );
+    const totalQuantityInCart = calculateTotalQuantityInCart(req.user);
+
+    res.render("cart", {
+      title: "Backend / Final - cart",
+      style: "styles.css",
+      payload: products,
+      user: req.user,
+      userAdmin: req.isAdmin,
+      totalQuantityInCart,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const renderProductDetails = async (req, res) => {
+  try {
+    const { pid } = req.params;
+    const product = await productModel.findOne({ _id: pid }).lean();
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    const totalQuantityInCart = calculateTotalQuantityInCart(req.user);
+
+    res.render("product-details", {
+      title: "Detalles del Producto",
+      style: "styles.css",
+      product: product,
+      user: req.user,
+      userAdmin: req.isAdmin,
+      totalQuantityInCart,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -159,4 +262,109 @@ export const buildPaginationLinks = (req, products) => {
     prevLink,
     nextLink,
   };
+};
+
+export const verifyUserSession = (req, res, next) => {
+  if (!req.user) {
+    res.clearCookie("connect.sid");
+    return res.redirect("/login");
+  }
+  next();
+};
+
+// Vista para purchase:
+export const purchaseView = async (req, res) => {
+  try {
+    // Verificar si el carrito existe
+    const cart = await cartService.getCartById(req.params.cid);
+    if (!cart) {
+      return res.status(404).json({ error: "El carrito no fue encontrado" });
+    }
+
+    const productsInCart = cart.products;
+    let purchaseSuccess = [];
+    let purchaseError = [];
+    let amount = 0;
+
+    try {
+      amount = await calculateTotalAmount(productsInCart);
+    } catch (error) {
+      return res.status(404).json({ error: error.message });
+    }
+
+    for (let product of productsInCart) {
+      const idproduct = product._id;
+      const quantity = product.quantity;
+      const productInDB = await productService.getProductByID(idproduct);
+      if (!productInDB) {
+        return res.status(404).json({ error: `Producto con ID ${idproduct} no encontrado` });
+      }
+
+      if (quantity > productInDB.stock) {
+        purchaseError.push({ ...product, productData: productInDB });
+      } else {
+        purchaseSuccess.push({ ...product, productData: productInDB });
+      }
+    }
+
+    console.log(cart._id);
+
+    // Crear el ticket
+    const ticket = await ticketRepository.createTicket(req.user.email, amount, cart);
+
+    const purchaseData = {
+      ticketId: ticket._id,
+      amount: ticket.amount,
+      purchaser: ticket.purchaser,
+      productosProcesados: purchaseSuccess,
+      productosNoProcesados: purchaseError,
+      cartId: cart._id,
+    };
+
+    // Obtener productos que no pudieron procesarse
+    const notProcessed = purchaseError.map((product) => ({
+      _id: product._id,
+      quantity: product.quantity,
+      name: product.productData.title,
+    }));
+
+    const processed = purchaseSuccess.map((product) => ({
+      _id: product._id,
+      quantity: product.quantity,
+      name: product.productData.title,
+    }));
+
+    // Renderizar la vista del ticket
+    res.render("purchase", {
+      status: "success",
+      title: "Detalles del Producto",
+      style: "styles.css",
+      payload: purchaseData,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      status: "error",
+      message: "Error interno del servidor",
+    });
+  }
+};
+
+const calculateTotalAmount = async (productsInCart) => {
+  let amount = 0;
+
+  for (let product of productsInCart) {
+    const idproduct = product._id;
+    const quantity = product.quantity;
+    const productInDB = await productService.getProductByID(idproduct);
+
+    if (!productInDB) {
+      throw new Error(`Producto con ID ${idproduct} no encontrado`);
+    }
+
+    const monto = productInDB.price * quantity;
+    amount += monto;
+  }
+
+  return amount;
 };
