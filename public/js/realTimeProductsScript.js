@@ -1,4 +1,3 @@
-
 const socket = io();
 const form = document.getElementById("formulario");
 const tableBody = document.getElementById("table-body");
@@ -37,9 +36,9 @@ function createTableRow(product) {
     <td>${product.stock}</td>
     <td>${product.code}</td>
     <td><img src="${
-      product.thumbnail && product.thumbnail.length
-        ? "img/" + product.thumbnail[0]
-        : "img/nothumbnail.webp"
+      product.thumbnails && product.thumbnails.length
+        ? "img/" + product.thumbnails[0]
+        : "img/noThumbnails.webp"
     }" alt="Thumbnail" class="thumbnail" style="width: 75px;"></td>
     <td><button class="btn btn-effect btn-dark btn-jif bg-black" onClick="deleteProduct('${
       product._id
@@ -57,7 +56,7 @@ function deleteProduct(productId) {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const fileInput = document.getElementById("thumbnail");
+  const fileInput = document.getElementById("thumbnails");
   const file = fileInput.files[0];
 
   product = {
@@ -85,7 +84,7 @@ form.addEventListener("submit", async (event) => {
       duration: 3000,
       gravity: "top",
       position: "right",
-      avatar: "../img/ADIA0995-1.jpeg",
+      avatar: "../img/check-mark.png",
       style: {
         background: "#96c93d",
       },
@@ -100,7 +99,7 @@ form.addEventListener("submit", async (event) => {
 });
 
 function previewImage() {
-  const fileInput = document.getElementById("thumbnail");
+  const fileInput = document.getElementById("thumbnails");
   const imagePreview = document.getElementById("imagePreview");
   const cancelButtonContainer = document.getElementById(
     "cancelButtonContainer"
@@ -128,7 +127,7 @@ function previewImage() {
   }
 }
 function cancelImageSelection() {
-  const fileInput = document.getElementById("thumbnail");
+  const fileInput = document.getElementById("thumbnails");
   fileInput.value = "";
   const imagePreview = document.getElementById("imagePreview");
   imagePreview.innerHTML = "";
@@ -170,7 +169,7 @@ function confirmarEliminacionProducto(idProducto) {
         duration: 3000,
         gravity: "top",
         position: "right",
-        avatar: "../img/ADIA0995-1.jpeg",
+        avatar: "../img/check-mark.png",
         style: {
           background: "#96c93d",
         },

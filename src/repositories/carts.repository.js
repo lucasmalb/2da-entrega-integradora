@@ -1,39 +1,31 @@
 import { cartModel } from "../models/cartModel.js";
-import cartDTO from "../dto/cartDTO.js";
+import { productModel } from "../models/productModel.js";
+import CartDTO from "../dto/cartDTO.js";
 
 class CartRepository {
   async getAllCarts() {
     try {
       return await cartModel.find().lean();
     } catch (error) {
-      console.error(error.message);
-      throw new Error("Error al buscar los carritos");
+      throw new Error("Error al buscar los carritos: " + error.message);
     }
   }
 
   async getCartById(cid) {
     try {
-      return await cartModel
-        .findOne({ _id: cid })
-        .populate({
-          path: "products.product",
-          model: "products",
-        })
-        .lean();
+      const cart = await cartModel.findById(cid).populate("products.product").lean();
+      return cart;
     } catch (error) {
-      console.error(error.message);
-      throw new Error("Error al obtener el carrito");
+      throw new Error("Error al obtener el carrito: " + error.message);
     }
   }
 
   async createCart(products) {
     try {
-      const newCartDTO = new cartDTO(products);
-      const cartCreated = await cartModel.create(newCartDTO);
-      return cartCreated;
+      const newCart = new cartModel({ products });
+      return await newCart.save();
     } catch (error) {
-      console.error(error.message);
-      throw new Error("Error al crear el carrito");
+      throw new Error("Error al crear el carrito: " + error.message);
     }
   }
 
@@ -94,6 +86,35 @@ class CartRepository {
     }
   }
 
+  async insertArray(cid, products) {
+    try {
+      const productIds = products.map((item) => item._id);
+      const fetchedProducts = await productModel.find({ _id: { $in: productIds } }).lean();
+
+      const productMap = new Map();
+      fetchedProducts.forEach((product) => {
+        productMap.set(product._id.toString(), product);
+      });
+      const updateProducts = products
+        .map((item) => {
+          const product = productMap.get(item._id.toString());
+          if (product) {
+            return {
+              _id: product._id,
+              quantity: item.quantity,
+            };
+          }
+          return null;
+        })
+        .filter((item) => item !== null);
+
+      return await this.updateCart(cid, updateProducts);
+    } catch (error) {
+      console.error("Error al insertar productos en el carrito:", error.message);
+      throw error;
+    }
+  }
+
   async clearCart(cid) {
     try {
       const cart = await cartModel.findOne({ _id: cid });
@@ -109,16 +130,6 @@ class CartRepository {
     } catch (error) {
       console.error(error.message);
       throw new Error("Error al vaciar carrito");
-    }
-  }
-
-  async getStockfromProducts(cid) {
-    try {
-      const results = await this.dao.getStockfromProducts(cid);
-      return new cartDTO(results);
-    } catch (error) {
-      console.log(error);
-      throw new Error(`Could not add products to ${cid}`);
     }
   }
 
@@ -142,4 +153,4 @@ class CartRepository {
   }
 }
 
-export default CartRepository ;
+export { CartRepository };

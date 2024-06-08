@@ -1,3 +1,4 @@
+// src/models/ticketModel.js
 import mongoose from "mongoose";
 
 const ticketCollection = "tickets";
@@ -6,19 +7,6 @@ const ticketSchema = new mongoose.Schema({
   code: {
     type: String,
     required: true,
-  },
-  products: {
-    type: [
-      {
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "products",
-        },
-        quantity: {
-          type: Number,
-        },
-      },
-    ],
   },
   purchaseDateTime: {
     type: Date,
@@ -29,9 +17,25 @@ const ticketSchema = new mongoose.Schema({
     required: true,
   },
   purchaser: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     required: true,
   },
+  products: [
+    {
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "products",
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
 const ticketModel = mongoose.model(ticketCollection, ticketSchema);

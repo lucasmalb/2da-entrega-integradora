@@ -65,4 +65,4 @@ class CartManagerFS {
   }
 }
 
-export default CartManagerFS ;
+export { CartManagerFS };

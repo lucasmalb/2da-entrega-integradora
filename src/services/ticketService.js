@@ -1,23 +1,23 @@
-import ticketDao from "../dao/MongoDB/TickerManagerDB.js";
+// src/services/ticketService.js
+import ticketModel from "../models/ticketModel.js";
 
 class TicketService {
   async getAllTickets(limit, page, query, sort) {
-    const options = { page: page ?? 1, limit: limit ?? 100, sort, lean: true };
-    return await ticketDao.getAllTickets(query ?? {}, options);
+    // Implementar lógica para obtener todos los tickets
   }
 
-  async getTicketById(tid) {
-    return await ticketDao.getTicketById(tid);
+  async getTicketById(ticketId) {
+    return await ticketModel.findById(ticketId);
   }
 
   async getTicketsByUserId(userId) {
-    return await ticketDao.getTicketsByUserId(userId);
+    return await ticketModel.find({ purchaser: userId });
   }
 
-  async createTicket(ticket) {
-    return await ticketDao.createTicket(ticket);
+  async createTicket(ticketData) {
+    const ticket = new ticketModel(ticketData);
+    return await ticket.save();
   }
 }
 
-const ticketService = new TicketService();
-export default ticketService;
+export default new TicketService();
