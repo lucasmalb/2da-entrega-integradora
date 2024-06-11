@@ -3,7 +3,7 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 const userCollection = "users";
 
-const userSchema = new mongoose.Schema({
+const userSchema = mongoose.Schema({
   first_name: {
     type: String,
     required: true,
@@ -38,4 +38,6 @@ userSchema.pre("find", function (next) {
   next();
 });
 
-export const userModel = mongoose.model(userCollection, userSchema);
+const userModel = mongoose.model(userCollection, userSchema);
+
+export default userModel;

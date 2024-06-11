@@ -1,4 +1,3 @@
-// src/repositories/ticketRepository.js
 import TicketService from "../services/ticketService.js";
 import { userModel } from "../models/userModel.js";
 

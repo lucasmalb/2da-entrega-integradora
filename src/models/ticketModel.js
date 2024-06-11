@@ -1,4 +1,3 @@
-// src/models/ticketModel.js
 import mongoose from "mongoose";
 
 const ticketCollection = "tickets";

@@ -1,4 +1,3 @@
-// src/controllers/ticketController.js
 import TicketRepository from "../repositories/ticketRepository.js";
 
 class TicketController {
