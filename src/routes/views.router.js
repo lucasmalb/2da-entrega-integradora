@@ -15,7 +15,7 @@ import {
   renderProductDetails,
   verifyUserSession,
   purchaseView,
-} from "../controllers/viewsController.js";
+} from "../controllers/views.controller.js";
 
 const router = Router();
 

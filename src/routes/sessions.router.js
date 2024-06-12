@@ -2,7 +2,7 @@ import { Router } from "express";
 import passport from "passport";
 import { passportCall } from "../utils/authUtil.js";
 import { loginJWT, gitHubCallBackJWT, handleRegister, handleLogin, getCurrentUser, logOutSession } from "../controllers/sessionController.js";
-import { logOut } from "../controllers/viewsController.js";
+import { logOut } from "../controllers/views.controller.js";
 
 const router = Router();
 
