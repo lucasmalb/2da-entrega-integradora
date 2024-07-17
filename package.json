@@ -4,7 +4,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/app.js"
+    "start": "nodemon src/app.js",
+    "test": "set NODE_ENV=test&&mocha './src/test/*.test.js'"
+
   },
   "author": "lucas villalba",
   "license": "ISC",
@@ -35,6 +37,7 @@
   },
   "devDependencies": {
     "chai": "^5.1.1",
-    "mocha": "^10.6.0"
+    "mocha": "^10.6.0",
+    "supertest": "^7.0.0"
   }
 }

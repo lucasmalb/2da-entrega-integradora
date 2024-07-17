@@ -346,7 +346,7 @@ components:
         code: "ORDER34534534"
         purchaseDateTime: "2024-06-10T02:54:10.103+00:00"
         amount: 31000
-        purchaser: "jfrei@gmail.com"
+        purchaser: "lucas.m.albrigi@gmail.com"
         products:
           - _id: "660725f2d49ab55bf9c00da3"
             quantity: 2
