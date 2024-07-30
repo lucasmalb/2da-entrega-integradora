@@ -18,6 +18,7 @@ import loggerRouter from "./routes/logger.router.js";
 import mailRouter from "./routes/mail.ruter.js";
 import usersRouter from "./routes/users.router.js";
 import cookieParser from "cookie-parser";
+import { addLogger } from "./utils/logger.js";
 
 const app = express();
 const port = config.PORT;
@@ -27,7 +28,7 @@ const swaggerOptions = {
   definition: {
     openapi: "3.0.1",
     info: {
-      title: "Documentacion JIF Style Ecommerce",
+      title: "Documentacion Sport Plus Ecommerce",
       description: "API pensada para aplicacion de un Marketplace",
     },
   },
@@ -45,6 +46,7 @@ app.use(express.static("public"));
 initializePassport();
 app.use(passport.initialize());
 app.use(cookieParser());
+app.use(addLogger);
 
 // Routes
 app.use("/", viewsRouter);

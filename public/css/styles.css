@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@300&family=Barlow+Condensed:wght@200&display=swap);
+@import url("https://fonts.googleapis.com/css2?family=Antonio:wght@100..700&family=Open+Sans&family=Poppins&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -6,8 +7,9 @@
   font-weight: 600;
   user-select: none;
 }
+
 body {
-  background-color:black;
+  background-color: #030303 !important;
 }
 .h1,
 .h2,
@@ -23,7 +25,6 @@ h5,
 h6 {
   font-weight: 900 !important;
   margin: 0 !important;
-  color: white;
 }
 .centrar {
   text-align: center;
@@ -50,8 +51,7 @@ div:where(.swal2-container) h2:where(.swal2-title) {
   border: 1px solid #d3d3d38a;
   border-radius: 10px;
   margin: 5px;
-  min-height: 400px;
-  width: 310px;
+  width: 100%;
 }
 .titulo {
   font-size: 24px;
@@ -63,7 +63,6 @@ div:where(.swal2-container) h2:where(.swal2-title) {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
-
 .description_container {
   color: #fff;
   display: flex;
@@ -84,11 +83,15 @@ div:where(.swal2-container) h2:where(.swal2-title) {
   margin-bottom: 10px;
 }
 a {
-  color: #1f1722;
+  color: white;
   padding: 5px;
   text-decoration: none;
 }
-h1 {
+a:hover{
+  color: orange;
+}
+h2 {
+  color: white;
   padding: 20px;
   display: flex;
   justify-content: center;
@@ -191,6 +194,20 @@ figcaption {
   width: 100%;
   padding-top: 90%;
 }
+
+.btn-ingreso{
+  color: #fff !important;
+  background-color:  #1183d0 ;
+  border-radius: 20px !important;
+  width: 130px !important;
+  padding: 3px 0 !important;
+  border:solid 1px black !important;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  -ms-border-radius: 3px !important;
+  -o-border-radius: 3px !important;
+}
+
 .btn-detalles {
   color: #fff !important;
   background-color: brown !important;
@@ -215,8 +232,8 @@ img {
 }
 .thumb-wrapper {
   padding: 0 0 12px 0;
-  border-radius: 20px;
-  background-color: white;
+  background: radial-gradient(circle, #eeaeca 0, #94bbe9 100%);
+  border-radius: 10px;
   text-align: center;
   position: relative;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
@@ -246,29 +263,10 @@ p {
 }
 .container {
   max-width: 100% !important;
-  background-color: black;
-  box-shadow: 5px 5px 10px orange;
-
-}
-.tit-nav {
-  color:orange;
-}
-.tit-nav strong{
-  color:white;
 }
 .nav-link {
   margin: 0 1rem;
-  color: orange;
 }
-.nav-link:hover{
-  color: white;
-} 
-.tit-nav .noto-serif-jp-regular {
-  font-family: "Noto Serif JP", serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
 .nav-link:focus,
 .nav-link:hover {
   transform: scale(1.2);
@@ -281,16 +279,9 @@ p {
   .nav-link {
     margin: 0.5rem 0;
   }
-  .fixed-top {
-    position: fixed !important;
-    height: auto;
-    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
-  }
   .navbar {
     padding: 0 !important;
     margin: 0 !important;
-    background-color: black !important;
-   
   }
 }
 .bg-body-tertiary {
@@ -300,16 +291,16 @@ p {
 .btn-jif:active,
 .btn-jif:focus,
 .btn-jif:hover {
-  color: white !important;
-  background-color: #5185C7  !important;
+  color: #b1995f !important;
+  background-color: #000 !important;
   border-color: #000 !important;
   box-shadow: 0 0 72px -17px rgba(0, 0, 0, 0.58);
 }
 .btn-jif {
   font-weight: 600 !important;
   color: #b1995f !important;
-  background-color: white !important;
-  border-color: #5185C7  !important;
+  background-color: #000 !important;
+  border-color: #000 !important;
 }
 .btn-effect {
   text-decoration: none;
@@ -318,7 +309,7 @@ p {
   overflow: hidden;
 }
 .btn-effect:hover {
-  box-shadow: 1px 1px 5px 5px transparent rgb(11, 11, 11);
+  box-shadow: 1px 1px 5px 5px #9d8854;
 }
 .btn-effect:before {
   content: "";
@@ -327,7 +318,7 @@ p {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(120deg, transparent, white, transparent);
+  background: linear-gradient(120deg, transparent, #9d8854, transparent);
   transition: all 650ms;
 }
 .btn-effect:hover:before {
@@ -366,7 +357,7 @@ p {
   font-size: 44px;
 }
 table {
-  width: 70%;
+  width: 80%;
 }
 table td,
 table th {
@@ -380,7 +371,6 @@ table td {
 table td:last-child {
   font-size: 0.95em;
   line-height: 1.4;
-  text-align: right;
   text-align: left;
   width: 5%;
 }
@@ -394,7 +384,7 @@ table tr:nth-child(2n + 1) {
   background-color: #f7f8ed;
   text-align: justify;
 }
-form {
+.flexForm {
   display: flex;
   flex-wrap: wrap;
 }
@@ -418,6 +408,7 @@ form {
 .table-items {
   border: 3px solid #caa573;
   padding: 40px;
+  /* display: inline-block; */
   min-width: 540px;
   border-radius: 10px;
   text-align: left;
@@ -474,7 +465,7 @@ form {
   white-space: nowrap;
 }
 .hero {
-  background-image: url("https://media2.solodeportes.com.ar/media/catalog/category/webp_banner_categoria_-_deportes_-_F_tbol.webp");
+  background-image: url("../img/banner.webp");
   background-size: cover;
   height: 300px;
   display: flex;
@@ -494,12 +485,16 @@ form {
 .product {
   display: inline-block;
   margin: 10px;
-  
+  border: 1px solid #ccc;
   padding: 20px;
-  border-radius: 29px;
-  background-color: transparent;
-  box-shadow: 0 0 10px white;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 15%;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
 }
 footer a {
   text-decoration: none;
@@ -508,8 +503,9 @@ footer a {
   height: 32px;
   line-height: 32px;
   text-align: center;
-  color: white;
+  color: #fff;
   border-radius: 50%;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   transition: all 0.4s ease-in-out;
   margin-left: 1%;
   margin-right: 1%;
@@ -517,7 +513,11 @@ footer a {
 
 footer a:hover {
   transform: scale(1.3);
-  
+  background: #050505;
+  -webkit-transform: scale(1.3);
+  -moz-transform: scale(1.3);
+  -ms-transform: scale(1.3);
+  -o-transform: scale(1.3);
 }
 
 footer .fa {
@@ -529,7 +529,7 @@ footer .fa {
 
 .footer_style {
   background-color: black;
-  box-shadow: 0px 5px 35px white;
+  box-shadow: 0 -4px 10px -2px orange;
   padding: 8px 0 8px 0;
   margin-top: auto;
   width: 100%;
@@ -547,10 +547,6 @@ footer .fa {
   display: inline-block;
   font: normal normal normal 14px / 1 FontAwesome;
   font-size: 22px;
-  
-}
-.fa-facebook{
-  background-color: transparent;
 }
 
 div:where(.swal2-icon) {
@@ -570,6 +566,12 @@ div:where(.swal2-icon).swal2-success {
   border-color: #82ce34 !important;
 }
 
+div:where(.swal2-icon).swal2-info {
+  background-color: #373737 !important;
+  color: white !important;
+  border-color: #373737 !important;
+}
+
 .swal2-popup.swal2-toast .swal2-icon {
   margin: 0 0.5em 0 0 !important;
 }
@@ -586,10 +588,8 @@ div:where(.swal2-icon).swal2-success .swal2-success-fix {
   background-color: transparent !important;
 }
 
-div:where(.swal2-icon).swal2-success
-  [class^="swal2-success-line"][class$="long"],
-div:where(.swal2-icon).swal2-success
-  [class^="swal2-success-line"][class$="tip"] {
+div:where(.swal2-icon).swal2-success [class^="swal2-success-line"][class$="long"],
+div:where(.swal2-icon).swal2-success [class^="swal2-success-line"][class$="tip"] {
   background-color: white;
 }
 
@@ -599,10 +599,8 @@ div:where(.swal2-icon).swal2-error {
   background-color: #cf3010 !important;
 }
 
-div:where(.swal2-icon).swal2-success
-  [class^="swal2-success-circular-line"][class$="left"],
-div:where(.swal2-icon).swal2-success
-  [class^="swal2-success-circular-line"][class$="right"] {
+div:where(.swal2-icon).swal2-success [class^="swal2-success-circular-line"][class$="left"],
+div:where(.swal2-icon).swal2-success [class^="swal2-success-circular-line"][class$="right"] {
   background-color: transparent !important;
 }
 
@@ -678,11 +676,11 @@ div:where(.swal2-container) button:where(.swal2-close):hover {
   padding: 6px 10px 7px;
   margin: 8px 0;
   line-height: 1.4;
-  margin-left: 35px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: end;
+  clear: both;
 }
 .message-body-span::before {
   content: "";
@@ -732,8 +730,7 @@ div:where(.swal2-container) button:where(.swal2-close):hover {
 .container-mio {
   width: 70%;
   height: 675px;
-  background:rgb(213, 207, 207);
-
+  background:  #2a94db ;
   margin: 0 auto;
   overflow: hidden;
   display: flex;
@@ -754,7 +751,6 @@ aside li h2 {
 .message-body p {
   border-radius: 20px;
   padding: 5px 0 !important;
-  max-width: 75%;
   display: block;
 }
 
@@ -767,7 +763,7 @@ aside li h2 {
   margin-left: 0px;
   border-radius: 20px 20px 20px 0;
   padding: 5px 15px;
-  max-width: 75%;
+  /* max-width: 75%; */
   display: block;
   position: relative;
 }
@@ -778,11 +774,14 @@ aside li h2 {
 
 .far-right {
   background: #bbc3e3fc;
-  width: auto;
 }
 
-.message-container.right p {
-  text-align: center;
+.right {
+  margin-left: 25%;
+}
+
+.left {
+  margin-right: 25%;
 }
 
 .containerProducts {
@@ -794,7 +793,7 @@ aside li h2 {
 
 .sidebar {
   flex: 1;
-  background-color: #f5f6fa;
+  background-color: black;
   padding: 10px;
 }
 .sidebar input[type="text"] {
@@ -853,7 +852,8 @@ aside li h2 {
   margin: 5% 0 0 0;
 }
 .antiquewhite {
-  background-color: antiquewhite;
+  border-bottom: 1px solid orange;
+  background-color: black;
 }
 .carrito21BoxCol1 {
   width: 130px;
@@ -863,11 +863,7 @@ aside li h2 {
 
 .wrapper {
   background: rgb(238, 174, 202);
-  background: radial-gradient(
-    circle,
-    rgba(238, 174, 202, 1) 0%,
-    rgba(148, 187, 233, 1) 100%
-  );
+  background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
   margin: 2rem 0;
 }
 .card-img {
@@ -957,6 +953,24 @@ aside li h2 {
   opacity: 1;
   left: 10px;
 }
+.button-inicio{
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+  background-color: rgba(151, 114, 45, 0.404);
+  border-radius: 0;
+  border: 0;
+}
+
+.button-inicio:hover {
+  background-color: #232323;
+  color: #fff;
+}
+.button-inicio:active {
+  background-color: #232323 !important;
+  color: #fff !important;
+}
 
 .button-black {
   text-transform: uppercase;
@@ -969,8 +983,15 @@ aside li h2 {
 }
 
 .button-black:hover {
-  background-color: #333;
+  background-color: #232323;
   color: #fff;
+}
+.button-black:active {
+  background-color: #232323 !important;
+  color: #fff !important;
+}
+.button-inicio.destroySession:hover {
+  background-color: #b14040;
 }
 .prev {
   position: relative;
@@ -1060,8 +1081,8 @@ aside li h2 {
 
 .numeroCarrito {
   position: absolute !important;
-  top: 13% !important;
-  left: 20% !important;
+  top: 10% !important;
+  left: 55% !important;
   background: #cf3010 !important;
   width: 20px !important;
   height: 20px !important;
@@ -1094,6 +1115,7 @@ aside li h2 {
   letter-spacing: 1px;
   text-transform: uppercase;
   font-size: var(--bs-nav-link-font-size);
+  align-self: center;
 }
 
 .imagen-carrito {
@@ -1123,37 +1145,7 @@ aside li h2 {
   top: 77% !important;
   left: 98.5% !important;
 }
-.user-box{
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  gap: 10px;
-  align-items: center;
-}
 
-.user-form{
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid black;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-  width: 40%;
-}
-
-.input-text{
-  color:#7469B6;
-  width: 50%;
-  padding: 10px;
-  border: none;
-  outline: none;
-  height: 10px;
-  border-bottom: 2px solid white;
-}
 .form {
   z-index: 15;
   position: relative;
@@ -1202,7 +1194,6 @@ aside li h2 {
 }
 .form-group button {
   outline: none;
-  background: #4285f4;
   width: 100%;
   border: 0;
   border-radius: 4px;
@@ -1238,6 +1229,21 @@ aside li h2 {
   padding: 0 5%;
   box-sizing: border-box;
 }
+.contenedor-registro {
+  width: 32em;
+  max-width: 100%;
+  padding: 0 0 1.25em;
+  border: none;
+  border-radius: 5px;
+  background: #fff;
+  color: #545454;
+  font-family: inherit;
+  font-size: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .form-panel.one:before {
   content: "";
   display: block;
@@ -1253,6 +1259,14 @@ aside li h2 {
 .form-header {
   margin: 0;
 }
+.modal-header h5 {
+  padding: 4px 0;
+  color: #4285f4;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .form-header h1 {
   padding: 4px 0;
   color: #4285f4;
@@ -1260,6 +1274,7 @@ aside li h2 {
   font-weight: 700;
   text-transform: uppercase;
 }
+
 .btn-signIn {
   background: #4285f4;
 }
@@ -1278,8 +1293,16 @@ aside li h2 {
 .user-menu {
   display: flex;
   position: absolute;
-  right: 0%;
+  right: 10%;
   flex-direction: column;
+}
+
+.vaciar-carrito-cancel {
+  background-color: #d33 !important;
+  box-shadow: none !important;
+}
+.vaciar-carrito-confirm {
+  box-shadow: none !important;
 }
 
 @media (max-width: 769px) {
@@ -1299,6 +1322,15 @@ aside li h2 {
     font-size: 18px;
   }
 
+
+  }
+
+  .span{
+    color:orange !important;
+  }
+  .span span{
+  color:white  !important;
+  }
   .sidebar,
   .product-info,
   .carousel-container {
@@ -1325,7 +1357,6 @@ aside li h2 {
   }
   .mobile {
     display: none;
-   
   }
   .form-holder {
     zoom: 75%;
@@ -1340,4 +1371,9 @@ aside li h2 {
     zoom: 53%;
     display: inline-table;
   }
+
+
+.variable-text {
+  color: #b57524;
+  margin-left: 0.5rem;
 }

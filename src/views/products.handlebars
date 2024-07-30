@@ -1,10 +1,10 @@
 <div class="mx-auto px-4">
   <div class="mx-auto my-2 text-center border-2 text-uppercase">
-    <h1>Tienda</h1>
+    <h1 style="color: white;">Tienda</h1>
   </div>
   <div class="containerProducts">
     <div class="sidebar">
-      <div class="logo text-center">SportPlus</div>
+      <div class="logo text-center">Sport Plus</div>
       <form action="/products" method="GET">
         <input type="text" id="txtSearch" name="title" placeholder="Buscar producto..." />
       </form>
@@ -34,9 +34,9 @@
           <figure>
             <div class="image-container">
               {{#if thumbnails}}
-              <img class="card-img" src="img/{{thumbnails}}" alt="{{title}}" />
+              <img class="card-img" src="img/products/{{thumbnails}}" alt="{{title}}" />
               {{else}}
-              <img class="card-img" src="img/noThumbnails.webp" alt="{{title}}" />
+              <img class="card-img" src="img/products/noThumbnails.webp" alt="{{title}}" />
               {{/if}}
               <div class="mask"></div>
               <figcaption>
@@ -64,7 +64,7 @@
     {{#if hasNextPage}}
     <a class="btn button-black next px-5" href="{{nextLink}}">Siguiente</a>
     {{/if}}
-    <h3>Página: {{page}}/{{totalPages}}</h3>
+    <h3 style="color: white;">Página: {{page}}/{{totalPages}}</h3>
   </div>
 </div>
 </div>

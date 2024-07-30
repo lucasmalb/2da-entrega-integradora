@@ -19,5 +19,5 @@ export default {
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
   EMAIL_USER: process.env.EMAIL_USER,
   EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
-  NODE_ENV: environment,
+  NODE_ENV: process.env.DEVELOPMENT,
 };

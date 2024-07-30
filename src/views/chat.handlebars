@@ -1,6 +1,6 @@
 <title>Chat</title>
 <div class="mx-auto my-2 text-center border-2 text-uppercase">
-  <h1>Chat de la tienda</h1>
+  <h1 style="color: white;">Chat de la tienda</h1>
 </div>
 <div class="container-mio">
   <aside class="py-3 aside-mio">
@@ -8,12 +8,12 @@
     <hr />
     <ul class="m-2" id="usersDB"></ul>
     <div style="text-align: -webkit-center;">
-      <button class="btn btn-effect btn-dark btn-jif bg-black btn-detalles" id="joinButton">Ingresar al Chat</button>
+      <button class="btn-ingreso" id="joinButton">Ingresar al Chat</button>
       <input type="hidden" id="user" value="{{ user.email }}">
       <button class="btn btn-effect btn-dark btn-jif bg-black btn-detalles" id="leaveButton" style="display: none;">Salir del Chat</button>
     </div>
   </aside>
-  <main class="container py-3" style="font-size: 18px;">
+  <main class="container py-3" style="font-size: 18px; color:lightblue">
     <section id="chat-container" class="rounded">
       <div id="messages-history" class="bg-chat mb-3">
         {{!-- Mensajes aca --}}
